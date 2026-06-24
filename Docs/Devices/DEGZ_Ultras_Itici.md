@@ -1,10 +1,26 @@
+---
+part: DEGZ-Ultras-Thruster
+category: thruster
+supplier: mucif.com
+supplier_url: https://www.mucif.com/urunler/degz-ultras-su-alti-iticisi/
+price_tl: 15968
+qty: 2
+status: alındı
+---
+
 # DEGZ Ultras Su Altı İticisi
 
-**Üretici:** DEGZ Robotics  
-**Satıcı:** mucif.com  
-**Link:** https://www.mucif.com/urunler/degz-ultras-su-alti-iticisi/  
-**Birim Fiyat:** 15,967.86 TL (KDV dahil)  
-**Proje Adedi:** 2
+> Her iki tekne gövdesine birer adet monte edilir. Diferansiyel hız kontrolü ile dönüş sağlanır; dümen gerekmez.
+
+![Ultras İtici](../Photos/utras.jpg)
+
+| | |
+|-|-|
+| Üretici | DEGZ Robotics |
+| Satıcı | mucif.com |
+| Birim Fiyat | 15.968 TL (KDV dahil) |
+| Proje Adedi | 2 |
+| Durum | Alındı |
 
 ---
 
@@ -12,54 +28,65 @@
 
 | Parametre | Değer |
 |-----------|-------|
-| İtki gücü | **8 Kgf @ 24V (6S)** |
-| Voltaj aralığı | 3S–6S (12V – 24V) |
-| Max sürekli akım | **35A** (üzeri uzun süre önerilmez) |
+| İtki gücü | 8 kgf @ 24 V (6S) |
+| Voltaj aralığı | 3S–6S (12–24 V) |
+| Max sürekli akım | 35 A |
 | Max derinlik | 500 m |
 | Motor | M5 fırçasız (brushless) |
 | Gövde | Poliüretan (enjeksiyon kalıplama) |
 | Tutucu | Uçak sınıfı alüminyum |
 | Montaj | M5×16 havşabaş vida |
-| Kontrol | PWM sinyali |
-| Pervane | Poliüretan, düşük gürültü optimize |
+| Kontrol | PWM (standart ESC protokolü) |
+| Pervane | Poliüretan, düşük gürültü |
 
 ---
 
-## Kontrol Uyumu
+## Güç Hesabı
 
-- Arduino, Raspberry Pi, ESP32 uyumlu
-- Standart ESC PWM protokolü
-- 3D tasarım dosyaları ve STEP modelleri mevcut
+| Senaryo | Akım / adet | Güç / adet | Toplam (2×) |
+|---------|-------------|------------|-------------|
+| Tam gaz | 35 A | 777 W | 1.554 W |
+| Cruise %60 | ~21 A | ~466 W | ~932 W |
+| Yavaş %30 | ~10 A | ~222 W | ~444 W |
 
 ---
 
-## Proje Notları
+## Bağlantı
 
-- 2 adet — her hull'a 1 itici
-- 22.2V (6S) sistemle tam voltajda çalışır → 8 Kgf thrust
-- 50A ESC ile kullanılıyor — motor max 35A, ESC yeterli marjda
-- Diferansiyel thrust ile yönlendirme: sol/sağ farklı hız → dönüş (rudder gereksiz)
-- Toplam max thrust: **16 Kgf** (2 × 8 Kgf) — USV ağırlığına göre değerlendir
+```
+PDB
+ ├── ESC Sol → Motor Sol (3 faz: A-B-C)
+ └── ESC Sağ → Motor Sağ (3 faz: A-B-C)
 
-### Güç Hesabı
+ESP32 GPIO17 ──PWM──► ESC Sol
+ESP32 GPIO18 ──PWM──► ESC Sağ
+```
 
-| Senaryo | Akım (per itici) | Güç (per itici) | Toplam |
-|---------|------------------|-----------------|--------|
-| Full throttle | 35A | 777W | 1,554W |
-| Cruise %60 | ~21A | ~466W | ~932W |
-| Yavaş %30 | ~10A | ~222W | ~444W |
+---
+
+## Yönlendirme Mantığı
+
+Diferansiyel thrust ile dönüş (kod: `Firmware/src/esp32/src/control.c`):
+
+```
+Sol motor  = gaz + yaw
+Sağ motor  = gaz - yaw
+```
+
+- Yaw > 0 → sağa dönüş (sol hızlanır, sağ yavaşlar)
+- Yaw < 0 → sola dönüş
 
 ---
 
 ## Bakım
 
-- Deniz suyu kullanımı sonrası **tatlı suyla çalıştır** (tuz kalıntısı temizleme)
-- Kırılmazlık garantisi: hasar görülen parça **ücretsiz değişim**
+- Deniz suyu kullanımı sonrası tatlı suyla çalıştır — tuz kalıntısını temizler
+- Hasar gören parça ücretsiz değişim kapsamındadır (DEGZ garantisi)
 
 ---
 
 ## Uyarılar
 
-- **35A üzeri uzun süreli çalışmadan kaçın** — motor ısınır
-- ESC motor kablosu (3 faz) doğru sırayla bağlanmalı
-- Güç kablosunda **10 AWG** kullan
+- **35 A üzerinde uzun süreli çalışmadan kaçın** — motor aşırı ısınır
+- ESC motor kablosu (3 faz) yanlış sırada bağlanırsa motor titrer — iki kabloyu yer değiştir ve tekrar test et
+- Ana güç kablosunda **10 AWG** kullan

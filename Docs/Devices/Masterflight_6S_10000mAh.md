@@ -1,7 +1,26 @@
-# Masterflight 10000 mAh 65C 6S 22.2 V LiPo
+---
+part: Masterflight-6S-10000mAh-65C
+category: battery
+supplier: —
+price_tl: —
+qty: 2
+status: alındı
+---
 
-**Proje Adedi:** 2 (paralel bağlanacak — toplam 20000 mAh @ 6S)
-**Konnektör:** XT90
+# Masterflight 6S 10000 mAh 65C LiPo
+
+> Ana güç kaynağı. İki adet paralel bağlanarak 20 Ah kapasiteye ulaşılır. Toplam enerji: 444 Wh.
+
+![LiPo Batarya](../Photos/lipo.jpg)
+
+| | |
+|-|-|
+| Üretici | Masterflight |
+| Hücre | 6S (seri) |
+| Kapasite | 10.000 mAh / adet |
+| Konnektör | XT90 |
+| Proje Adedi | 2 (paralel) |
+| Durum | Alındı |
 
 ---
 
@@ -9,46 +28,39 @@
 
 | Parametre | Değer |
 |-----------|-------|
-| Hücre sayısı | 6S (6 hücre seri) |
-| Nominal voltaj | 22.2 V |
-| Tam dolu | 25.2 V (4.20 V/hücre) |
-| Boş (cutoff) | 19.8 V (3.30 V/hücre) — daha aşağı **inme** |
-| Storage | 22.8-23.1 V (3.80-3.85 V/hücre) |
-| Kapasite | 10000 mAh = 10 Ah |
-| C-rating | 65C (sürekli), 130C (anlık) |
-| Max sürekli akım | 650 A (teorik — 35A motor için fazlasıyla yeterli) |
-| Ağırlık | ~1400 g/adet (datasheet doğrula) |
-| Konnektör | XT90 (yüksek akım) |
-| Balance konnektör | JST-XH 7-pin (6S+GND) |
+| Nominal voltaj | 22.2 V (3.70 V/hücre) |
+| Tam dolu voltaj | 25.2 V (4.20 V/hücre) |
+| Boş (cutoff) voltajı | 19.8 V (3.30 V/hücre) |
+| Storage voltajı | 22.8–23.1 V (3.80–3.85 V/hücre) |
+| C-rating (sürekli) | 65C → 650 A teorik |
+| C-rating (anlık) | 130C → 1300 A teorik |
+| Ağırlık | ~1400 g/adet |
+| Konnektör | XT90 |
+| Balance konnektör | JST-XH 7-pin (6S + GND) |
 
 ---
 
-## Enerji ve Süre
+## Enerji ve Süre Tahmini
 
-- **Enerji (tek batarya):** 22.2 V × 10 Ah = **222 Wh**
-- **Enerji (paralel ikili):** **444 Wh**
+| Senaryo | Güç | Süre (444 Wh, %80 kullanım) |
+|---------|-----|------------------------------|
+| Tam gaz (2× thruster) | 1.554 W | ~14 dk |
+| Cruise %60 | ~932 W | ~23 dk |
+| Yavaş %30 | ~444 W | ~48 dk |
+| Sadece elektronik | ~5 W | >50 saat |
 
-| Senaryo | Toplam güç | Süre (444 Wh) |
-|---------|-----------|---------------|
-| Full throttle (2× 777W) | 1554 W | ~17 dk |
-| Cruise %60 | 932 W | ~28 dk |
-| Yavaş %30 | 444 W | ~60 dk |
-| Idle (sadece elektronik) | ~5 W | >70 saat |
-
-> Süreler **%100 → %20 deşarj** baz alınarak hesaplandı (3.50V/hücre cutoff).
-> %0'a inmek hücreyi öldürür, asla yapma.
+> Süreler %100 → %20 deşarj baz alınarak hesaplandı (3.50 V/hücre cutoff).
 
 ---
 
 ## Paralel Bağlama
 
-**XT90 paralel harness** (2→1) kullanılır. **ÖNEMLİ:**
+**XT90 paralel harness (2→1) ile bağlanır.**
 
-1. Bağlamadan önce her iki bataryanın voltajı **eşit** olmalı (max **0.1 V fark**)
-2. Voltaj farkı varsa balance şarj ile eşitle — direkt paralel = arc + akım şoku
-3. Paralel bağlandıktan sonra **tek batarya gibi** davranır
-4. **Asla seri bağlama** — proje 6S, paralel kapasite artırır, voltaj artırmaz
-5. Harness'i tekne tarafına bağlamadan önce iki bataryayı birbirine bağla
+1. Her iki bataryanın voltajı **eşit** olmalı (max 0.1 V fark)
+2. Fark varsa önce balance şarj ile eşitle — direkt paralel bağlamak ark + akım şokuna yol açar
+3. Paralel bağlandıktan sonra sistem tek büyük batarya gibi davranır
+4. **Asla seri bağlama** — sistem 6S tasarımlı, seri bağlamak 12S yapar ve tüm elektroniği yakar
 
 ---
 
@@ -56,63 +68,63 @@
 
 | Parametre | Değer |
 |-----------|-------|
-| Şarj akımı (önerilen) | 5 A (0.5C, güvenli) |
-| Şarj akımı (max) | 10 A (1C, hızlı) |
-| Balance şarj | **ZORUNLU** her seferinde |
-| Şarj sıcaklığı | 0-40 °C |
-| Tam dolu voltaj | 4.20 V/hücre (±0.02 V) |
-| Hücreler arası fark | <50 mV (tam dolu sonrası) |
+| Önerilen şarj akımı | 5 A (0.5C) |
+| Maksimum şarj akımı | 10 A (1C) |
+| Balance şarj | Zorunlu |
+| Şarj sıcaklığı | 0–40 °C |
+| Hedef voltaj | 4.20 V/hücre |
+| Hücreler arası max fark | 50 mV (tam dolu sonrası) |
 
 **Adımlar:**
-1. Şarj cihazı **LiPo balance** moduna al
-2. Cell count: **6S** (otomatik tanıma ile doğrula)
-3. Şarj akımı = 5 A (acil değilse)
-4. Balance konnektörü **mutlaka** bağla
-5. Şarj başlat — **GÖZLEM ALTINDA**, asla yalnız bırakma
-6. Tamamlanınca 10 dk bekle, hücre voltajlarını oku
+1. Şarj cihazını **LiPo Balance** moduna al
+2. Cell count: **6S** — otomatik algılama ile doğrula
+3. Akım: 5 A (acil değilse)
+4. Balance konnektörü bağla
+5. **Gözetim altında** şarj et, asla yalnız bırakma
+6. Bittikten sonra 10 dk bekle, hücre voltajlarını kontrol et
 
 ---
 
-## Depo (Storage)
+## Depolama
 
-Pil 24 saatten uzun süre kullanılmayacaksa **mutlaka storage voltajına** ayarla.
+24 saatten uzun süre kullanılmayacaksa **storage voltajına** indir:
 
-- **Storage voltaj:** 3.80-3.85 V/hücre = ~22.8-23.1 V toplam
-- Şarj cihazında "Storage" / "Discharge to storage" modu
-- Tam dolu bırakılan LiPo → şişme + kapasite kaybı → ölüm
-- Boş bırakılan LiPo → derin deşarj → ölüm
+- Hedef: **3.80–3.85 V/hücre** (~22.8–23.1 V toplam)
+- Şarj cihazında "Storage" veya "Discharge to storage" modunu kullan
+- Tam dolu bırakılan LiPo → şişme + kalıcı kapasite kaybı
+- Boş bırakılan LiPo → derin deşarj → geri dönüşü olmayan hasar
 
 ---
 
-## Test Öncesi Kontrol
+## Test Öncesi Kontrol Listesi
 
-- [ ] Hücre voltajı **>4.10 V/hücre** (tam doluya yakın)
-- [ ] Hücreler arası fark **<50 mV**
+- [ ] Hücre voltajı > 4.10 V/hücre
+- [ ] Hücreler arası fark < 50 mV
 - [ ] Sıcaklık ortam sıcaklığında
-- [ ] Şişme/balon yok (gözle ve elle yokla)
-- [ ] Kablo/konnektör hasar yok
-- [ ] Test bitiminde voltaj **>3.50 V/hücre** kalmalı, daha düşükse durdur
+- [ ] Şişme / balon yok (gözle ve elle kontrol)
+- [ ] Kablo ve konnektörde hasar yok
+- [ ] Test sonunda voltaj > 3.50 V/hücre kalmalı — düşükse durdur
 
 ---
 
-## Uyarılar
+## Güvenlik
 
 ### Yangın Riski
-- LiPo yangını **su ile söndürülmez** — kum, toprak veya class D söndürücü
-- Şarj sırasında **fireproof bag** zorunlu
-- Yanıcı yüzey üzerinde **şarj etme**
 
-### Şişme Tespit
-Şişmiş batarya = ÖLÜ. Şarj etme, kullanma.
-1. Tuzlu suya batır (3-4 yemek kaşığı tuz / 5 L su)
-2. **1 hafta** beklet — tam deşarj olur, voltaj 0 V
-3. Belediye e-atık veya pil geri dönüşüm noktası
+- LiPo yangını **su ile söndürülmez** — kum, toprak veya sınıf D söndürücü kullan
+- Şarj sırasında **fireproof bag** zorunlu
+- Yanıcı yüzey üzerinde şarj etme
+
+### Şişmiş Batarya
+
+Şişmiş batarya kullanılamaz. İmha prosedürü:
+
+1. Tuzlu suya batır (3–4 yemek kaşığı tuz / 5 L su)
+2. 1 hafta beklet — voltaj 0 V'a düşer
+3. Belediye e-atık veya pil geri dönüşüm noktasına teslim et
 
 ### Taşıma
-- Konnektörler **kapalı/izole** (kısa devre)
-- Sert plastik kutu içinde
-- Uçakla taşıma → havayolu kuralları, LiPo özel prosedür
 
-### Çevresel
-- Bataryalar **toprak/su'ya atılmaz**
-- Pil geri dönüşüm noktası: AVM'ler, elektronik mağazaları
+- Konnektörleri izole et (kısa devre riski)
+- Sert plastik kutu içinde taşı
+- Uçakla taşıma → havayolu LiPo kurallarına uy

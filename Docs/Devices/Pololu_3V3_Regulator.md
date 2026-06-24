@@ -1,11 +1,25 @@
-# Pololu S9V11F3S5C3 — 3.3V Buck-Boost Regülatör
+---
+part: Pololu-S9V11F3S5C3
+category: regulator
+supplier: hepsiburada.com
+supplier_url: https://www.pololu.com/product/2873
+price_tl: 930
+qty: 1
+status: alındı
+---
 
-**Üretici:** Pololu  
-**Satıcı:** hepsiburada.com (Robotsepeti)  
-**Link:** https://www.pololu.com/product/2873  
-**Ürün Kodu:** S9V11F3S5C3  
-**Birim Fiyat:** 930 TL  
-**Proje Adedi:** 1
+# Pololu S9V11F3S5C3 — 3.3 V Buck-Boost Regülatör
+
+> ESP32-S3'ün 3.3 V besleme hattı. DEGZ 5 V regülatöründen beslenir; düşük voltaj kesme özelliği ile batarya koruması sağlar.
+
+| | |
+|-|-|
+| Üretici | Pololu |
+| Ürün Kodu | S9V11F3S5C3 |
+| Satıcı | hepsiburada.com (Robotsepeti) |
+| Birim Fiyat | 930 TL |
+| Proje Adedi | 1 |
+| Durum | Alındı |
 
 ---
 
@@ -13,56 +27,58 @@
 
 | Parametre | Değer |
 |-----------|-------|
-| Giriş voltajı | 3V – 16V |
-| Çıkış voltajı | 3.3V sabit (±5%/-3%) |
-| Alternatif çıkış | 5V (SEL pini ile) |
-| Max sürekli akım | 1.5A |
+| Giriş voltajı | 3–16 V |
+| Çıkış voltajı | 3.3 V sabit (tolerans: +5% / −3%) |
+| Alternatif çıkış | 5 V (SEL pini ile seçilir) |
+| Max sürekli akım | 1.5 A |
 | Verimlilik | %85–95 |
-| Low voltage cutoff | 3V (histerez: 3.4V) |
+| Low voltage cutoff | 3 V (histerez: 3.4 V) |
 | Boyut | 12.7 × 15.3 × 4.3 mm |
-| Tip | Buck-Boost (step-up/step-down) |
+| Tip | Buck-Boost (step-up / step-down) |
 
 ---
-
-## Özellik: Low Voltage Cutoff
-
-- 3V altına düşünce çıkışı keser → aşırı deşarj koruması
-- 3.4V'e kadar histerez — salınım olmadan temiz kesim
-- LiPo batarya ömrünü korur
 
 ## Özellik: Buck-Boost
 
-- Giriş > çıkış → step-down (buck)
-- Giriş < çıkış → step-up (boost)
-- 3V girişte bile 3.3V sabit çıkış → batarya bitişinde bile çalışır
+Giriş voltajı çıkış voltajından yüksekse buck (düşürür), düşükse boost (yükseltir) modunda çalışır. Bu sayede 3 V girişte bile 3.3 V sabit çıkış sağlanır — batarya deşarj sonuna yaklaşırken bile ESP32 çalışmaya devam eder.
+
+## Özellik: Low Voltage Cutoff
+
+Giriş 3 V'un altına düşünce çıkışı keser. 3.4 V'a çıkana kadar yeniden açılmaz (histerez). LiPo bataryanın aşırı deşarjını önler.
 
 ---
 
-## Proje Notları
-
-- ESP32-S3 3.3V hattını besleyecek
-- DEGZ 5V/12V regülatörün 5V çıkışından veya BEC'ten beslenebilir
-- 1.5A limit: ESP32 peak ~500mA, sensörler ~200mA → yeterli
-- Boyutu küçük, PCB'ye veya gövdeye kolayca monte edilir
-- SEL pini ile 5V moduna geçilebilir (gerekirse)
-
-### Güç Zinciri (Öneri)
+## Güç Zinciri
 
 ```
-Batarya (22.2V)
-    → PDB
-        → ESC ×2 (güç)
-        → DEGZ 5V/12V Reg
-            → 5V → BEC / RC alıcı
-            → 12V → aksesuarlar
-            → 5V → Pololu S9V11F3S5C3
-                       → 3.3V → ESP32-S3
+Batarya (22.2 V)
+    └── PDB
+          └── DEGZ 5V/12V Reg
+                    └── 5 V çıkış
+                              └── Pololu S9V11F3S5C3
+                                        └── 3.3 V → ESP32-S3
 ```
+
+> **Önemli:** Pololu max 16 V giriş kabul eder. Batarya voltajını (22.2 V) doğrudan bağlama.
+
+---
+
+## Yük Tahmini
+
+| Yük | Akım |
+|-----|------|
+| ESP32-S3 (aktif, Wi-Fi kapalı) | ~150 mA |
+| ESP32-S3 (Wi-Fi aktif, peak) | ~500 mA |
+| Sensörler (IMU, GPS) | ~100–200 mA |
+| **Toplam tahmini** | **~700 mA** |
+
+1.5 A limite karşı yeterli marj var.
 
 ---
 
 ## Uyarılar
 
-- Max 16V giriş — 22.2V direkt bağlama, önce 5V/12V regülatörden geçir
-- 1.5A limiti aşma — ESP32 + sensör toplamını hesapla
-- Küçük boyut, titreşimde gevşemesin, sabit monte et
+- Giriş voltajı max **16 V** — DEGZ 5 V hattından besle, bataryadan doğrudan bağlama
+- 1.5 A limitini aşma — eklenecek her sensör için yük hesabını güncelle
+- Küçük boyutu nedeniyle titreşimde gevşeyebilir — rijit monte et
+- SEL pini 5 V modunu etkinleştirir; varsayılan konumda 3.3 V çıkış geçerlidir
