@@ -23,8 +23,8 @@
 
 ## Proje Notları
 
-- 22.2V (6S) girişten ESP32 (5V) ve sensörler (12V) besleyecek
-- 5V çıkış → ESP32, RC alıcı, servo
+- 22.2V (6S) girişten elektronik sistemi besler
+- 5V çıkış → Pololu 3.3V regülatör (→ ESP32), RC alıcı, servo
 - 12V çıkış → kamera, aydınlatma, vb. (varsa)
 - Güç Dağıtım Kartı'ndan sonra konumlandırılmalı
 - İki çıkış bağımsız, yük dağıtımı esnek

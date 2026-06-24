@@ -56,7 +56,7 @@
 ## Bağlantı
 
 ```
-Batarya → PDB → ESC → Utras İtici
+Batarya → PDB → ESC → Ultras İtici
                  ↑
            ESP32 GPIO PWM
 ```
@@ -66,6 +66,6 @@ Batarya → PDB → ESC → Utras İtici
 ## Uyarılar
 
 - **ESC kalibrasyonu şart:** İlk açılışta 1500µs gönder, 3 sn bekle
-- Ana hat için **min 12 AWG** kablo kullan
+- Ana hat için **10 AWG** kablo kullan
 - Motor 3 faz kablosu (A-B-C) yanlış sırada → motor titrer, iki kabloyu değiştir
 - Muhafaza dışına al — uzun çalışmada ısınır

@@ -1,4 +1,4 @@
-# DEGZ Utras Su Altı İticisi
+# DEGZ Ultras Su Altı İticisi
 
 **Üretici:** DEGZ Robotics  
 **Satıcı:** mucif.com  
@@ -62,4 +62,4 @@
 
 - **35A üzeri uzun süreli çalışmadan kaçın** — motor ısınır
 - ESC motor kablosu (3 faz) doğru sırayla bağlanmalı
-- Güç kablosunda min **12 AWG** kullan (listede 18 AWG var — yetersiz)
+- Güç kablosunda **10 AWG** kullan

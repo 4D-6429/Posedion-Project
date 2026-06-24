@@ -21,7 +21,7 @@ listeye işle.
 - [DEGZ_Ultras_Itici.md](DEGZ_Ultras_Itici.md) — Su altı thruster ×2
 
 ### Pasif
-- [18AWG_Silikon_Kablo.md](18AWG_Silikon_Kablo.md) — Sinyal hattı (ana güç için yetersiz, 12 AWG alınacak)
+- `18AWG_Silikon_Kablo.md` — Sinyal hattı (döküman hazırlanacak; ana güç hattı için 10 AWG kullanılacak)
 
 ---
 
@@ -72,6 +72,6 @@ listeye işle.
 
 ## İlgili
 
-- Genel envanter ve fiyat tablosu: [PROJE_DURUMU.md](../PROJE_DURUMU.md)
-- Pin atamaları: [pin_map.md](../pin_map.md)
-- Bağlantı şeması: [wiring.md](../wiring.md)
+- Genel envanter ve fiyat tablosu: `PROJE_DURUMU.md` (hazırlanacak)
+- Pin atamaları: `pin_map.md` (hazırlanacak)
+- Bağlantı şeması: `wiring.md` (hazırlanacak)

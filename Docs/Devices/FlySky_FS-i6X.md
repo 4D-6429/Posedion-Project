@@ -41,7 +41,7 @@
 | CH5 | 4 | **Arm switch** (planlanan) | SWA / SWD | 2-poz |
 | CH6 | 5 | (yedek) | VRA / SWC | Eksen/anahtar |
 
-**Kod referansı:** `firmware/src/control.c` → `ibus_get_normalized(2)` = CH3 (gaz),
+**Kod referansı:** `Firmware/src/esp32/src/control.c` → `ibus_get_normalized(2)` = CH3 (gaz),
 `ibus_get_normalized(3)` = CH4 (yaw).
 
 ---
@@ -80,7 +80,7 @@ güvenli pozisyona** ayarlanmalı.
 
 ## Bağlama (Bind) Prosedürü
 
-1. Alıcıya **bind plug** tak (SENS pinine kısa devre)
+1. Alıcının **B/VCC** portuna bind plug tak (küçük beyaz 2 pinli soket, SENS ile karıştırma)
 2. Alıcıya güç ver — LED hızlı yanıp söner
 3. Kumandada Menu → System → RX Bind
 4. Kumandayı aç, bağlama otomatik
