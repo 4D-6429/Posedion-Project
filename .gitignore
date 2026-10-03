@@ -12,6 +12,9 @@
 **/.vscode/ipch/
 **/.vscode/.browse.c_cpp.db*
 
+# JetBrains IDE
+**/.idea/
+
 # OS
 .DS_Store
 Thumbs.db
