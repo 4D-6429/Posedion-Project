@@ -9,6 +9,10 @@
 #define MOTOR_PULSE_MID_US   1500
 #define MOTOR_PULSE_MAX_US   2000
 
+/* Sol motor ESC'sinin gerçek nötr noktası 1500µs'den kaymışsa telafi için.
+ * Pozitif değer nötrü/pulse'ı yukarı kaydırır. Donanımda test ederek ayarla. */
+#define MOTOR_LEFT_TRIM_US   -13
+
 /* TODO: Donanım bağlantısı netleşince bu pinleri güncelle */
 #define MOTOR_LEFT_GPIO    GPIO_NUM_17   /* sol thruster ESC sinyal pini */
 #define MOTOR_RIGHT_GPIO   GPIO_NUM_18   /* sağ thruster ESC sinyal pini */
@@ -32,3 +36,8 @@ void motor_set(float left, float right);
 
 /* Her iki motoru nötral pulse (1500µs) olarak durdurur. */
 void motor_stop(void);
+
+/* ESC kalibrasyon dizisi: MAX → bekle → NÖTR → bekle, log üzerinden yönlendirir.
+ * SADECE main.c içindeki ESC_CALIBRATION_MODE=1 iken çağrılır, geri dönmez.
+ * DİKKAT: ESC'lere güç vermeden önce pervane/itki bağlı değilse güvenlidir. */
+void motor_calibrate_escs(void);

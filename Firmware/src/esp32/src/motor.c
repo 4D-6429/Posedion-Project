@@ -1,21 +1,30 @@
 #include "motor.h"
 #include "driver/mcpwm_prelude.h"
 #include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 static const char *TAG = "motor";
 
 static mcpwm_cmpr_handle_t s_cmpr_left  = NULL;
 static mcpwm_cmpr_handle_t s_cmpr_right = NULL;
 
-/* pulse_us hesapla: -1.0..1.0 → MOTOR_PULSE_MIN_US..MOTOR_PULSE_MAX_US */
-static uint32_t to_pulse_us(float val)
+/* pulse_us hesapla: -1.0..1.0 → MOTOR_PULSE_MIN_US..MOTOR_PULSE_MAX_US, trim_us eklenip clamp edilir */
+static uint32_t to_pulse_us(float val, int trim_us)
 {
     if (val >  1.0f) val =  1.0f;
     if (val < -1.0f) val = -1.0f;
+
+    int32_t pulse;
     if (val >= 0.0f)
-        return (uint32_t)(MOTOR_PULSE_MID_US + val * (MOTOR_PULSE_MAX_US - MOTOR_PULSE_MID_US));
+        pulse = (int32_t)(MOTOR_PULSE_MID_US + val * (MOTOR_PULSE_MAX_US - MOTOR_PULSE_MID_US));
     else
-        return (uint32_t)(MOTOR_PULSE_MID_US + val * (MOTOR_PULSE_MID_US - MOTOR_PULSE_MIN_US));
+        pulse = (int32_t)(MOTOR_PULSE_MID_US + val * (MOTOR_PULSE_MID_US - MOTOR_PULSE_MIN_US));
+
+    pulse += trim_us;
+    if (pulse > MOTOR_PULSE_MAX_US) pulse = MOTOR_PULSE_MAX_US;
+    if (pulse < MOTOR_PULSE_MIN_US) pulse = MOTOR_PULSE_MIN_US;
+    return (uint32_t)pulse;
 }
 
 esp_err_t motor_init(void)
@@ -81,13 +90,41 @@ esp_err_t motor_init(void)
 void motor_set(float left, float right)
 {
     if (!s_cmpr_left || !s_cmpr_right) return;
-    mcpwm_comparator_set_compare_value(s_cmpr_left,  to_pulse_us(left));
-    mcpwm_comparator_set_compare_value(s_cmpr_right, to_pulse_us(right));
+    uint32_t pulse_left  = to_pulse_us(left,  MOTOR_LEFT_TRIM_US);
+    uint32_t pulse_right = to_pulse_us(right, 0);
+    mcpwm_comparator_set_compare_value(s_cmpr_left,  pulse_left);
+    mcpwm_comparator_set_compare_value(s_cmpr_right, pulse_right);
+    ESP_LOGI(TAG, "ESC pulse: L=%uus R=%uus", (unsigned)pulse_left, (unsigned)pulse_right);
 }
 
 void motor_stop(void)
 {
     if (!s_cmpr_left || !s_cmpr_right) return;
+    mcpwm_comparator_set_compare_value(s_cmpr_left,  to_pulse_us(0.0f, MOTOR_LEFT_TRIM_US));
+    mcpwm_comparator_set_compare_value(s_cmpr_right, MOTOR_PULSE_MID_US);
+}
+
+void motor_calibrate_escs(void)
+{
+    if (!s_cmpr_left || !s_cmpr_right) return;
+
+    ESP_LOGW(TAG, "=== ESC KALIBRASYON MODU ===");
+    ESP_LOGW(TAG, "1) ESC guc kaynagi KAPALI olmali, pervane/itki TAKILI OLMAMALI.");
+    ESP_LOGW(TAG, "2) 5 saniye icinde MAX sinyal baslayacak, o sirada ESC'ye GUC VER.");
+    vTaskDelay(pdMS_TO_TICKS(5000));
+
+    ESP_LOGW(TAG, "MAX sinyal (%dus) gonderiliyor — ESC'nin ilk beep'ini bekle...", MOTOR_PULSE_MAX_US);
+    mcpwm_comparator_set_compare_value(s_cmpr_left,  MOTOR_PULSE_MAX_US);
+    mcpwm_comparator_set_compare_value(s_cmpr_right, MOTOR_PULSE_MAX_US);
+    vTaskDelay(pdMS_TO_TICKS(5000));
+
+    ESP_LOGW(TAG, "NOTR sinyale (%dus) geciliyor — ikinci beep'i bekle...", MOTOR_PULSE_MID_US);
     mcpwm_comparator_set_compare_value(s_cmpr_left,  MOTOR_PULSE_MID_US);
     mcpwm_comparator_set_compare_value(s_cmpr_right, MOTOR_PULSE_MID_US);
+    vTaskDelay(pdMS_TO_TICKS(3000));
+
+    ESP_LOGW(TAG, "Kalibrasyon tamamlandi. main.c'deki ESC_CALIBRATION_MODE'u 0 yapip yeniden yukle.");
+    while (1) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
 }

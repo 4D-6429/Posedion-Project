@@ -19,10 +19,10 @@
  * RAMP_RATE     : her döngüde (20ms) motorun max değişim miktarı
  *                 0.02 → 0'dan 1'e 1.0s | 0.05 → 0.4s | 0.10 → 0.2s
  * SOFT_START_MS : boot sonrası ESC arm için nötrde bekleme (ms) */
-#define CTRL_DEADZONE       0.05f
-#define CTRL_MAX_THROTTLE   0.80f
-#define CTRL_MAX_YAW        0.70f
-#define CTRL_RAMP_RATE      0.02f
+#define CTRL_DEADZONE       0.01f
+#define CTRL_MAX_THROTTLE   0.10f
+#define CTRL_MAX_YAW        0.07f
+#define CTRL_RAMP_RATE      2.0f /* GEÇİCİ: ramp devre dışı — -1..1 aralığının tamamından büyük, tek döngüde hedefe atlar */
 #define CTRL_SOFT_START_MS  2000
 
 /* Soft start uygular: motorları nötrde tutar, ESC arm süresini bekler. */
